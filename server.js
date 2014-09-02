@@ -1,5 +1,26 @@
 'use strict';
 
+/**
+*
+* Issue por resolver: Cuando creamos una cuenta y la asociamos a facebook,
+* luego cerramos session, creamos otra cuenta y asociamos la misma
+* cuenta de facebook anteriormente registrada en otra cuenta, queda un problema
+* en la base de datos, ya que existen 2 cuentas con el mismo facebook asociado,
+* y para esta aplicacion que usa el login de facebook, al intentar iniciar sesion
+* con facebook, la base de datos tiene 2 cuentas asociadas al facebook que se esta
+* intentando logear, por ende el login termina siendo realizada por cualquiera
+* de las 2 cuentas al alzar (incluso al un problema mayor en el relinking de las
+* cuentas, ya que volviendo a linkear una cuenta con ese facebook, lo que termina
+* pasando es que para la cuenta tambien se termina asociando)
+*
+* En conclusion el problema es debido a que esta aplicacion esta permitiendo
+* asociar una misma cuenta (de Facebook, Twitter, Google) a n cuentas, lo cual
+* lleva a irregularidades al momento de iniciar sesion desde Facebook, Twitter, Google,
+* al momento de desvincular cuentas y al momento de volver a vincularlas.
+*
+**/
+
+
 var express = require('express'),
     mongoose = require('mongoose'),
     passport = require('passport'),
@@ -19,6 +40,7 @@ app.configure(function() {
   app.use(express.cookieParser('ilovescotchscotchyscotchscotch'));
   app.use(express.bodyParser()); // get information from html forms
 
+  // PORT 8080 used in the register of the app in Twitter, Facebook, Google
   app.set('port', process.env.PORT || 8080);
   app.set('view engine', 'ejs'); // set up ejs for templating
 

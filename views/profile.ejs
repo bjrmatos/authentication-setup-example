@@ -21,15 +21,97 @@
             <!-- LOCAL INFORMATION -->
             <div class="col-sm-6">
                 <div class="well">
-                    <h3><span class="fa fa-user"></span>Local</h3>
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
+                    <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <% if (user.local.email) { %>
+                        <p>
+                            <strong>id</strong>: <%= user._id %><br>
+                            <strong>email</strong>: <%= user.local.email %><br>
+                            <strong>password</strong>: <%= user.local.password %>
+                        </p>
+                        <a class="btn btn-default" href="/unlink/local">Unlink</a>
+                    <% } else { %>
+                       <a class="btn btn-default" href="/connect/local">Connect Local</a>
+                    <% } %>
+                </div>
+            </div>
+            <!-- FACEBOOK INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                    <!-- check if the user has this token (is the user authenticated with this social account) -->
+                    <% if (user.facebook.token) { %>
+                        <p>
+                            <strong>id</strong>: <%= user.facebook.id %><br>
+                            <strong>token</strong>: <%= user.facebook.token %><br>
+                            <strong>email</strong>: <%= user.facebook.email %><br>
+                            <strong>name</strong>: <%= user.facebook.name %>
+                        </p>
+                        <a class="btn btn-primary" href="/unlink/facebook">Unlink</a>
+                    <% } else { %>
+                        <a class="btn btn-primary" href="/connect/facebook">Connect Facebook</a>
+                    <% } %>
+                </div>
+            </div>
+            <!-- TWITTER INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
+
+                    <!-- check if the user has this token (is the user authenticated with this social account) -->
+                    <% if (user.twitter.token) { %>
+                        <p>
+                            <strong>id</strong>: <%= user.twitter.id %><br>
+                            <strong>token</strong>: <%= user.twitter.token %><br>
+                            <strong>username</strong>: <%= user.twitter.username %><br>
+                            <strong>displayName</strong>: <%= user.twitter.displayName %>
+                        </p>
+                        <a class="btn btn-primary" href="/unlink/twitter">Unlink</a>
+                    <% } else { %>
+                        <a class="btn btn-info" href="/connect/twitter">Connect Twitter</a>
+                    <% } %>
+                </div>
+            </div>
+            <!-- GOOGLE INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google</h3>
+
+                    <!-- check if the user has this token (is the user authenticated with this social account) -->
+                    <% if (user.google.token) { %>
+                        <p>
+                            <strong>id</strong>: <%= user.google.id %><br>
+                            <strong>token</strong>: <%= user.google.token %><br>
+                            <strong>email</strong>: <%= user.google.email %><br>
+                            <strong>name</strong>: <%= user.google.name %>
+                        </p>
+                        <a class="btn btn-primary" href="/unlink/google">Unlink</a>
+                    <% } else { %>
+                        <a class="btn btn-danger" href="/connect/google">Connect Google</a>
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Remove the ugly Facebook appended hash
+        // <https://github.com/jaredhanson/passport-facebook/issues/12>
+        (function removeFacebookAppendedHash() {
+          if (!window.location.hash || window.location.hash !== '#_=_')
+            return;
+          if (window.history && window.history.replaceState)
+            return window.history.replaceState("", document.title, window.location.pathname);
+          // Prevent scrolling by storing the page's current scroll offset
+          var scroll = {
+            top: document.body.scrollTop,
+            left: document.body.scrollLeft
+          };
+          window.location.hash = "";
+          // Restore the scroll offset, should be flicker free
+          document.body.scrollTop = scroll.top;
+          document.body.scrollLeft = scroll.left;
+        })();
+    </script>
 </body>
 </html>
